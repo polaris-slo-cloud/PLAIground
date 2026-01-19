@@ -1,8 +1,10 @@
 # PLAIgroud
 
-PLAIground is a declarative programming model designed for the construction and orchestration of Compound AI Systems. It decouples high-level algorithmic design from low-level execution concerns, enabling developers to define workflows as directed graphs of task-oriented components rather than focusing on integration details. By separating the "what" from the "how", PLAIground ensures workflow portability across 3D Compute Continuum, from satellites, through edge devices to cloud clusters. To support declarative execution PLAIground employs model selection mechanism to allocate optimal models for each task, based on SLO constraints. 
+PLAIground is a novel framework designed to enable runtime model selection in Compound AI Systems. It decouples high-level algorithmic design from low-level execution concerns, enabling developers to define workflows as directed graphs of task-oriented components rather than focusing on integration details. By separating the "what" from the "how", PLAIground ensures workflow portability across 3D Compute Continuum, from satellites, through edge devices to cloud clusters. To support declarative execution PLAIground employs model selection mechanism to allocate optimal models for each task, based on SLO constraints. 
 
-This is the source code repository for the PLAIground prototype implemented in Python and described in the paper: **PLAIground: A Declarative Programming Model for Compound AI Systems in the 3D Continuum**. Details on the architecture, mechanisms, and evaluation can be found in the paper.
+![PLAIground Compoundable Model Diagram](docs/images/PLAIground.png)
+
+This is the source code repository for the PLAIground prototype implemented in Python and described in the paper: **PLAIground: A Framework for Runtime Model Selections for Compound AI Systems in the 3D Continuum**. Details on the architecture, mechanisms, and evaluation can be found in the paper.
 
 ## Core Concepts 
 
@@ -10,13 +12,12 @@ This is the source code repository for the PLAIground prototype implemented in P
 
 The key abstraction of PLAIground is the **Compoundable Model**—a computational unit that wraps an AI task and separates the high-level task specification (what needs to be done) from low-level execution details (which models perform the task, deployment, etc.).
 
-![PLAIground Compoundable Model Diagram](docs/images/PLAIground.png)
+![PLAIground Compoundable Model Diagram](docs/images/Abs.png)
 
 It encapsulates three contracts that define its behavior and interface:
 
 - **Data Contract** - defines the input and output data structures required by the model to ensure type safety and seamless integration. By enforcing strict schemas (e.g., requiring an `image` byte stream input or a `bounding_box` list output) and validating data at runtime, it prevents integration errors when connecting heterogeneous models in a workflow.
 - **Task Contract** - provides a declarative specification of the computational intent, independent of any specific model implementation. By defining the required capability (e.g., `llm` or `object_detection`) and task configuration (such as prompt templates or classification labels) rather than hardcoding a provider, it enables complete workflow portability. This separation allows the system to swap underlying models—like replacing GPT-4 with a local Llama instance—without requiring any changes to the workflow code.
-- **System Contract** - acts as the bridge that maps abstract task specifications to deployed models, specific provider APIs or underlying infrastructure. It manages the binding between a model abstraction and a specific instance (via Connectors like `OllamaConnector`), enabling the system to dynamically adapt to changing conditions or infrastructure requirements while preserving application state. Furthermore, Connectors are tasked with translating Data Contract specification to provider specific or deployment specific details. 
 
 ##### Example: Specifying a Compoundable Model in PLAIground prototype implementation
 
